@@ -74,7 +74,7 @@ void Term() :
 void Fact() :
 {}
 {
-   ( <Num> | <LPAR> Exp() <RPAR> )
+   ( <Num> | <LPAR> Exp() <RPAR> | < MINUS> Fact() ) *
 }
 
 
