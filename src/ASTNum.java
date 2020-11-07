@@ -1,12 +1,12 @@
 public class ASTNum implements ASTNode {
 
-int val;
+String id;
 
-        public int eval() { return val; }
+        public int eval(Environment e) { return e.find(id); }
 
-        public ASTNum(int n)
+        public ASTNum(String n)
         {
-	   val = n;
+	   id = n;
         }
 
 }

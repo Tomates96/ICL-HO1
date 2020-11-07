@@ -7,5 +7,7 @@ public class Environment {
 	Environment endScope();
 	
 	void assoc(String id, int val);
+	
 	int find (String id);
+	
 }

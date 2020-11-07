@@ -98,7 +98,7 @@ ASTNode Fact() :
 {
    ( n=<Num> { t = new ASTNum(Integer.parseInt(n.image)); }
    | <LPAR> t=Exp() <RPAR> )
-   | < DEF > n = <Id> <EQ> t1 = Exp() <IN>  body = Exp() <END> {/*falta aqui qualquer coisa*/}
+   | < DEF > n = <Id> <EQ> t = Exp() <IN>  body = Exp() <END> {/*falta aqui qualquer coisa*/}
    { return t; }
 }
 
