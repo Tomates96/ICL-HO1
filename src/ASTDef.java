@@ -5,6 +5,10 @@ public class ASTDef implements ASTNode{
 	ASTNode init;
 	ASTNode body;
 	
+	ASTDef(String id){
+		this.id = id;
+	}
+	
 	@Override
 	public int eval(Environment e) {
 		// To do 

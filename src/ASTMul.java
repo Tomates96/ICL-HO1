@@ -1,4 +1,4 @@
-public class ASTPlus implements ASTNode {
+public class ASTMul implements ASTNode {
 
 ASTNode lhs, rhs;
 
@@ -9,7 +9,7 @@ ASTNode lhs, rhs;
         return v1+v2; 
 	}
     
-        public ASTPlus(ASTNode l, ASTNode r)
+        public ASTMul(ASTNode l, ASTNode r)
         {
 		lhs = l; rhs = r;
         }
