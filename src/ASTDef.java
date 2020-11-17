@@ -5,14 +5,22 @@ public class ASTDef implements ASTNode{
 	ASTNode init;
 	ASTNode body;
 	
-	ASTDef(String id){
+	ASTDef(String id, ASTNode init, ASTNode body){
 		this.id = id;
+		this.init = init;
+		this.body = body;
 	}
 	
 	@Override
-	public int eval(Environment e) {
-		// To do 
-		return 0;
+	public int eval(Environment e) throws UndeclaredIdentifier, IdentifierDeclaredTwice {
+		int v1 = init.eval(e);
+		e = e.beginScope();
+		e.assoc(id, v1);
+		int val = body.eval(e);
+		e.endScope();
+		return val;
 	}
+
+	
 
 }

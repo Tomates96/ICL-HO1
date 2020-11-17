@@ -3,7 +3,7 @@ public class ASTDiv implements ASTNode {
 
 	ASTNode lhs, rhs;
 
-    public int eval(Environment e) throws UndeclaredIdentifier
+    public int eval(Environment e) throws UndeclaredIdentifier, IdentifierDeclaredTwice
     { 
     	int v1 = lhs.eval(e);
     	int v2 = rhs.eval(e);
@@ -14,4 +14,6 @@ public class ASTDiv implements ASTNode {
     {
     	lhs = l; rhs = r;
     }
+
+	
 }
