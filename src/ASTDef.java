@@ -21,6 +21,4 @@ public class ASTDef implements ASTNode{
 		return val;
 	}
 
-	
-
 }
