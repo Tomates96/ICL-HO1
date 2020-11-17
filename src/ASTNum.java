@@ -2,7 +2,7 @@ public class ASTNum implements ASTNode {
 
 String id;
 
-        public int eval(Environment e) { 
+        public int eval(Environment e) throws UndeclaredIdentifier { 
         	return e.find(id); 
         	}
 

@@ -6,7 +6,7 @@ ASTNode lhs, rhs;
 	{
 		lhs = l; rhs = r;
 	}
-	public int eval(Environment e)
+	public int eval(Environment e) throws UndeclaredIdentifier
     { 
 		
 		int v1 = lhs.eval(e);

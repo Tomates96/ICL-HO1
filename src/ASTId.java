@@ -8,7 +8,7 @@ public class ASTId  implements ASTNode{
 	}
 
 	@Override
-	public int eval(Environment e) {
+	public int eval(Environment e) throws UndeclaredIdentifier {
 		
 		return e.find(id);
 	}

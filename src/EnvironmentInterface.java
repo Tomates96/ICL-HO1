@@ -7,7 +7,7 @@ public interface EnvironmentInterface {
 		/*pop top level*/
 		Environment endScope();
 		
-		void assoc(String id, int val) throws IDDeclaredTwice;
+		void assoc(String id, int val) throws IdentifierDeclaredTwice;
 		
 		int find (String id) throws UndeclaredIdentifier;
 		

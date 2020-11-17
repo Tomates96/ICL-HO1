@@ -24,9 +24,9 @@ public class Environment implements EnvironmentInterface{
 	}
 
 	@Override
-	public void assoc(String id, int val) throws IDDeclaredTwice {
+	public void assoc(String id, int val) throws IdentifierDeclaredTwice {
 		if(e.get(0).containsKey(id))
-			throw new IDDeclaredTwice();
+			throw new IdentifierDeclaredTwice();
 		e.get(0).put(id, val);
 	}
 
