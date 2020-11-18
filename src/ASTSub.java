@@ -1,5 +1,5 @@
 
-public class ASTMinus implements ASTNode {
+public class ASTSub implements ASTNode {
 
 	ASTNode lhs, rhs;
 
@@ -10,7 +10,7 @@ public class ASTMinus implements ASTNode {
     	return v1-v2; 
     }
 
-    public ASTMinus(ASTNode l, ASTNode r)
+    public ASTSub(ASTNode l, ASTNode r)
     {
     	lhs = l; rhs = r;
     }
