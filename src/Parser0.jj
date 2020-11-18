@@ -8,11 +8,11 @@ public class Parser {
   public static void main(String args[]) {
     Parser parser = new Parser(System.in);
     ASTNode exp;
-
+	Environment env = new Environment();
     while (true) {
     try {
     exp = parser.Start();
-    System.out.println( exp.eval() );
+    System.out.println( exp.eval(env));
     } catch (Exception e) {
       System.out.println ("Syntax Error!");
       parser.ReInit(System.in);
@@ -85,7 +85,9 @@ ASTNode Term() :
   ASTNode t1, t2;}
 {
      t1 = Fact() ( ( op=<TIMES> | op=<DIV> ) t2 = Term() 
- 		 {
+ 		 {	if (op.kind == TIMES) 
+                         t1 = new ASTTimes(t1,t2);
+                   else  t1 = new ASTDiv(t1,t2);
                  } 
 		)?
      { return t1; } 
@@ -94,11 +96,12 @@ ASTNode Term() :
 
 ASTNode Fact() :
 { Token n; 
-  ASTNode t;}
+  ASTNode t, body;}
 {
    ( n=<Num> { t = new ASTNum(Integer.parseInt(n.image)); }
    | <LPAR> t=Exp() <RPAR> )
-   | < DEF > n = <Id> <EQ> t = Exp() <IN>  body = Exp() <END> {/*falta aqui qualquer coisa*/}
+   | < DEF > n = <Id> <EQ> t = Exp() <IN>  body = Exp() <END>
+   {t = new ASTDef(n.image,t,body);}
    { return t; }
 }
 

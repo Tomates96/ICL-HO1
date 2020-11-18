@@ -1,12 +1,12 @@
 public class ASTNum implements ASTNode {
 
-String id;
+int id;
 
         public int eval(Environment e) throws UndeclaredIdentifier { 
-        	return e.find(id); 
+        	return e.find(String.valueOf(id)); 
         	}
 
-        public ASTNum(String n)
+        public ASTNum(int n)
         {
 	   id = n;
         }
