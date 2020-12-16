@@ -1,3 +1,4 @@
+package environment;
 @SuppressWarnings("serial")
 public class UndeclaredIdentifier extends Exception {
 	

@@ -1,3 +1,4 @@
+package environment;
 
 public interface EnvironmentInterface {
 	/*Interpreter class*/

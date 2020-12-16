@@ -1,3 +1,5 @@
+package ast;
+import environment.*;
 
 public interface ASTNode {
 

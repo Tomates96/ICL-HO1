@@ -1,5 +1,7 @@
+package ast;
+import environment.*;
 
-public class ASTTimes implements ASTNode {
+public class ASTSub implements ASTNode {
 
 	ASTNode lhs, rhs;
 
@@ -7,10 +9,10 @@ public class ASTTimes implements ASTNode {
     { 
     	int v1 = lhs.eval(e);
     	int v2 = rhs.eval(e);
-    return v1*v2; 
-}
+    	return v1-v2; 
+    }
 
-    public ASTTimes(ASTNode l, ASTNode r)
+    public ASTSub(ASTNode l, ASTNode r)
     {
     	lhs = l; rhs = r;
     }

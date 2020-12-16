@@ -1,3 +1,6 @@
+package ast;
+import environment.*;
+
 public class ASTNum implements ASTNode {
 
 int id;
