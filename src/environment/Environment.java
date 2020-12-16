@@ -7,7 +7,7 @@ public class Environment implements EnvironmentInterface{
 
 	private Stack<Map<String, Integer>> e;
 	
-	Environment (){
+	public Environment (){
 		e = new Stack<Map<String, Integer>>();
 	}
 	

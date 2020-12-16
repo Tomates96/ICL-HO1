@@ -7,11 +7,9 @@ public class Parser {
   /** Main entry point. */
   public static void main(String args[]) {
     Parser parser = new Parser(System.in);
-
     while (true) {
     try {
-    parser.Start();
-    System.out.println( "OK!" );
+    System.out.println( "OK!");
     } catch (Exception e) {
       System.out.println ("Syntax Error!");
       parser.ReInit(System.in);

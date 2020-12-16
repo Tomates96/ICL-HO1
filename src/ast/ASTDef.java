@@ -7,7 +7,7 @@ public class ASTDef implements ASTNode{
 	ASTNode init;
 	ASTNode body;
 	
-	ASTDef(String id, ASTNode init, ASTNode body){
+	public ASTDef(String id, ASTNode init, ASTNode body){
 		this.id = id;
 		this.init = init;
 		this.body = body;
