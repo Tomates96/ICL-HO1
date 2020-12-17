@@ -80,7 +80,9 @@ void Term() :
 void Fact() :
 {}
 {
-   ( <Num> | <LPAR> Exp() <RPAR> | < MINUS> Fact()
+   ( <Num> |
+   <LPAR> Exp() <RPAR> |
+   < MINUS> Fact()
    | < DEF > <Id> <EQ> Exp() <IN>  Exp() <END> )
 }
 

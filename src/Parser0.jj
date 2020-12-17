@@ -1,3 +1,6 @@
+options {
+	static = false;
+}
 PARSER_BEGIN(Parser)
 
 
@@ -100,11 +103,14 @@ ASTNode Fact() :
 { Token n; 
   ASTNode t, body;}
 {
-   ( n=<Num> { t = new ASTNum(Integer.parseInt(n.image)); }
-   | <LPAR> t=Exp() <RPAR> )
-   | < DEF > n = <Id> <EQ> t = Exp() <IN>  body = Exp() <END>
-   {t = new ASTDef(n.image,t,body);}
-   { return t; }
+    n=<Num>
+   { return new ASTNum(Integer.parseInt(n.image)); }
+   |
+   <LPAR> t=Exp() <RPAR>
+	{ return t; }
+   |
+   < DEF > n = <Id> <EQ> t = Exp() <IN>  body = Exp() <END>
+   {return new ASTDef(n.image,t,body);}
 }
 
 

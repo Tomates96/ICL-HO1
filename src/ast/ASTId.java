@@ -1,4 +1,5 @@
 package ast;
+import Utils.CodeBlock;
 import environment.*;
 
 public class ASTId  implements ASTNode{
@@ -15,6 +16,13 @@ public class ASTId  implements ASTNode{
 		return e.find(id);
 	}
 
+	@Override
+	public void compile(CodeBlock c, CompileEnvironment env) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 	
 	
 

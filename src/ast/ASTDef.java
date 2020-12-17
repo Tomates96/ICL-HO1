@@ -1,4 +1,5 @@
 package ast;
+import Utils.CodeBlock;
 import environment.*;
 
 public class ASTDef implements ASTNode{
@@ -21,6 +22,12 @@ public class ASTDef implements ASTNode{
 		int val = body.eval(e);
 		e.endScope();
 		return val;
+	}
+
+	@Override
+	public void compile(CodeBlock c, CompileEnvironment env) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -1,4 +1,5 @@
 package ast;
+import Utils.CodeBlock;
 import environment.*;
 
 
@@ -17,6 +18,13 @@ public class ASTTimes implements ASTNode {
     {
     	lhs = l; rhs = r;
     }
+
+	@Override
+	public void compile(CodeBlock c, CompileEnvironment env) {
+		lhs.compile(c, env);
+		rhs.compile(c, env);
+		c.emit("imul");
+	}
 
 	
 }
