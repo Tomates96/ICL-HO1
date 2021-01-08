@@ -4,8 +4,9 @@ options {
 PARSER_BEGIN(Parser)
 
 
-import ast.*;
 import environment.*;
+import ast.*;
+import values.*;
 import java.util.*;
 /** ID lister. */
 public class Parser {
@@ -44,6 +45,34 @@ TOKEN :
   < IN: "in">
   |
   < END: "end">
+  | 
+  < OR: "||" >
+  |
+  < TRUE : "true" >
+  |   
+  < FALSE : "false" >
+  |
+  < EQUAL:"==" >
+  |
+  < DIFFERENT:"!=" >
+  |
+  < NOT:"!" >
+  |   
+  < GREATER:">" >
+  |
+  < SMALLER: "< ">
+  |
+  < GREATER_EQUAL: " >=">
+  |
+  < SMALLER_EQUAL: "<=">
+  |
+  < IF : "if">
+  | 
+  < THEN: "then" >
+  |
+  < ELSE: "else" >
+  |
+  < EXIT : "exit">
   |
   < Id: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )* >
   |
@@ -63,15 +92,96 @@ TOKEN :
   |
   < EQ : "|">
   |
+  < SEMICOL : ";">
+  |
+  < ASSIGN : ":=">
+  |
+  < AND: "&&" >
+  | 
   < EL: "\n" >
 }
 
 ASTNode Start():
-{ ASTNode t; }
+{ ASTNode t;}
 {
-   t = Exp() <EL>
-   { return t; }
+   t = Root() <EL>
+   	{ return t; }
+   |
+    <EXIT> <EL>
+        { System.exit(0); }
 }
+
+ASTNode Root():
+{ASTNode t;}
+{
+	t = Seq()
+	{ return t; }
+}
+
+ASTNode Seq():
+{ASTNode t1,t2;}
+{
+	t1 = Assign() [< SEMICOL > t2= Seq() {t1 = new ASTSeq(t1,t2);}]
+	{return t1;}
+}
+
+ASTNode Assign():
+{ASTNode t1,t2;}
+{
+	t1 = Disj() (LOOKAHEAD(2) < ASSIGN > t2=Disj() {t1=new ASTAssign(t1,t2);})*
+	{return t1;}
+}
+
+ASTNode Disj():
+{ASTNode t1,t2;}
+{
+	t1=Conj() (LOOKAHEAD(2)(<OR>) t2=Conj() {t1=new ASTDisj(t1,t2);})*
+	{return t1;}
+}
+
+ASTNode Conj():
+{ASTNode t1,t2;}
+{
+	t1=Bool() (LOOKAHEAD(2)(<AND>) t2=Bool() {t1=new ASTConj(t1,t2);})*
+	{return t1;}
+}
+
+
+ASTNode Bool():
+{ASTNode t; Token x;}
+{
+	(x=< TRUE > | x=< FALSE > )
+		{return new ASTBool(Boolean.parseBoolean(x.image));}
+	|
+	< NOT > t = Disj()
+		{return new ASTNot(t);}
+	|
+	t=Cmp()
+		{return t;}
+}
+
+ASTNode Cmp():
+{ASTNode t1,t2;}
+{
+   t1=cmpNum() (< EQUAL > t2=Bool() {t1=new ASTEqual(t1,t2);}
+		|
+		<DIFFERENT> t2 = Bool() {t1=new ASTDiff(t1,t2);})?
+   {return t1;}
+}
+
+ASTNode cmpNum():
+{ASTNode t1,t2;}
+{
+   t1=Exp() (<GREATER> t2=Exp() {t1=new ASTBigger(t1,t2);}
+	     |
+	     <SMALLER> t2=Exp() {t1=new ASTSmaller(t1,t2);}
+	     |
+	     <GREATER_EQUAL> t2=Exp() {t1=new ASTBiggerEQ(t1,t2);}
+	     |
+	     <SMALLER_EQUAL> t2=Exp() {t1=new ASTSmallerEQ(t1,t2);})?
+   {return t1;}
+}
+
 
 ASTNode Exp() :
 { Token op;
@@ -86,16 +196,18 @@ ASTNode Exp() :
      { return t1; } 
 }
 
+
+
 ASTNode Term() :
 {Token op;
   ASTNode t1, t2;}
 {
-     t1 = Fact() ( ( op=<TIMES> | op=<DIV> ) t2 = Term() 
+     t1 = Fact() (LOOKAHEAD(2) ( op=<TIMES> | op=<DIV> ) t2 = Term() 
  		 {	if (op.kind == TIMES) 
                          t1 = new ASTTimes(t1,t2);
                    else  t1 = new ASTDiv(t1,t2);
                  } 
-		)?
+		)*
      { return t1; } 
 }
 
@@ -113,6 +225,9 @@ ASTNode Fact() :
    |
    < DEF > bindings = Bindings() <IN>  body = Exp() <END>
    {return new ASTDef(bindings,body);}
+   |
+	< IF > t=Root() < THEN > t1=Root() < ELSE > t2=Root() < END >
+		{return new ASTIf(t,t1,t2);} 
 }
 
 List<Binder> Bindings():

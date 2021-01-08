@@ -11,6 +11,7 @@ public class CodeBlock {
 	public ArrayList<String> code;
 	private LinkedList<StackFrame> frames;
     private Stack<StackFrame> stack;
+    public int labelCount = 0;
 	
 	public CodeBlock(){
 		code = new ArrayList<>(100);
@@ -43,6 +44,7 @@ public class CodeBlock {
        code.add("getfield frame_"+ frame.number+"/loc_0"+offset/*+type_name*/);
     }
 	
+	
 	public  void emit_store(int frame_n, int offset){
         code.add("putfield frame_"+ frame_n+"/"+String.format("v",offset));
     }
@@ -70,7 +72,83 @@ public class CodeBlock {
         }
     }
 	
-	
+     public void emit_goto(String label_a, String label_b) {
+    	 emit("sipush "+1);
+         code.add("goto "+label_b);
+         code.add(label_a+":");
+         emit("sipush "+0);
+         code.add(label_b+":");
+     }
+     public void emit_diff(){
+         String label_a = createLabel();
+         String label_b = createLabel();
+         code.add("if_icmpeq "+label_a);
+         emit_goto(label_a,label_b);
+
+     }
+     public void emit_eq(){
+         String label_a = createLabel();
+         String label_b = createLabel();
+         code.add("if_icmpne "+label_a);
+         emit_goto(label_a,label_b);        
+
+     }
+     
+     public void emit_gteq(){
+         String label_a = createLabel();
+         String label_b = createLabel();
+         code.add("if_icmplt "+ label_a);
+         emit_goto(label_a,label_b);
+     }
+     
+     public void emit_bg(){
+         String label_1 = createLabel();
+         String label_2 = createLabel();
+         code.add("if_icmple "+ label_1);
+         emit_goto(label_1,label_2);
+     }
+     
+     public void emit_sm(){
+         String label_a = createLabel();
+         String label_b = createLabel();
+         code.add("if_icmpge "+ label_a);
+         emit_goto(label_a,label_b);
+     }
+     
+     public void emit_smeq(){
+         String label_a = createLabel();
+         String label_b = createLabel();
+         code.add("if_icmple "+ label_a);
+         emit_goto(label_a,label_b);
+     }
+     
+     public void emit_and(){
+         code.add("iand");
+     }
+     
+     public void emit_pop(){
+         code.add("pop");
+     }
+     
+     public void emit_not(){
+         String label_a = createLabel();
+         String label_b = createLabel();
+         code.add("ifne "+ label_a);
+         emit("sipush "+1);
+         code.add("goto " +label_b);
+         code.add(label_a+":");
+         emit("sipush "+0);
+         code.add(label_b+":");
+     }
+     
+     private String createLabel() {
+         return "L"+labelCount++;
+     }
+     
+     public void emit_or(){
+         code.add("ior");
+     }
+     
 	public void init_frame(int frame_n){
         StackFrame frame = getFrame(frame_n);
         if(frame.parent != null){

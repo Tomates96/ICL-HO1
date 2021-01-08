@@ -28,7 +28,7 @@ ASTNode lhs, rhs;
 				return new intValues(((intValues) l).getValue() + ((intValues) int_r).getValue());
 
 		}
-		throw new BadTypeException();
+		throw new BadTypeException("Invalid type, expected num");
 	}
 	
 	@Override

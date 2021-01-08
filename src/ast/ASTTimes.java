@@ -28,7 +28,7 @@ public class ASTTimes implements ASTNode {
 				return new intValues(((intValues) l).getValue() * ((intValues) int_r).getValue());
 
 		}
-		throw new BadTypeException();
+		throw new BadTypeException("Invalid type, expected number");
     }
 
     public ASTTimes(ASTNode l, ASTNode r)
