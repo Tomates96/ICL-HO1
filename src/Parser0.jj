@@ -214,7 +214,7 @@ ASTNode Term() :
 
 ASTNode Fact() :
 { Token n; 
-  ASTNode t, body;
+  ASTNode t,t1,t2, body;
   List<Binder> bindings = new LinkedList<Binder>();}
 {
     n = <Num>
@@ -223,7 +223,7 @@ ASTNode Fact() :
    <LPAR> t=Exp() <RPAR>
 	{ return t; }
    |
-   < DEF > bindings = Bindings() <IN>  body = Exp() <END>
+   < DEF > bindings = Bindings() <IN>  body = Root() <END>
    {return new ASTDef(bindings,body);}
    |
 	< IF > t=Root() < THEN > t1=Root() < ELSE > t2=Root() < END >
@@ -235,7 +235,7 @@ List<Binder> Bindings():
   ASTNode t1;
   List<Binder> bindings = new LinkedList <Binder>(); }
 {
-  (( x = <Id> <EQ> t1 = Exp() )
+  (( x = <Id> <EQ> t1 = Root() )
    {bindings.add(new Binder(x.image,t1));}) + {return bindings;}
 }
 

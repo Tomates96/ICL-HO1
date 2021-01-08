@@ -122,6 +122,35 @@ public class CodeBlock {
          emit_goto(label_a,label_b);
      }
      
+     public String emit_if_condition(){
+    	 emit("sipush "+1);
+         String label = this.createLabel();
+         code.add("if_icmpeq "+label);
+         return label;
+     }
+
+     public void emit_then(String else_label, String end){
+         code.add("goto "+end);
+         code.add(else_label+":");
+     }
+     
+     public void finishIf(String end){
+         code.add(end+":");
+     }
+
+     public String emit_end(){
+         String label = this.createLabel();
+         return label;
+     }
+
+     public String emit_else(String label){
+         String n_label = this.createLabel();
+         code.add("goto "+n_label);
+         code.add(label+":");
+         return n_label;
+     }
+
+     
      public void emit_and(){
          code.add("iand");
      }
