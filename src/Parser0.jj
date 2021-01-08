@@ -73,6 +73,10 @@ TOKEN :
   < ELSE: "else" >
   |
   < EXIT : "exit">
+  | 
+  < WHILE:"while" >
+  |
+  < DO:"do" >
   |
   < Id: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )* >
   |
@@ -226,6 +230,9 @@ ASTNode Fact() :
    < DEF > bindings = Bindings() <IN>  body = Root() <END>
    {return new ASTDef(bindings,body);}
    |
+	< WHILE > t1=Root() < DO > t2=Root() < END > 
+		{return new ASTWhile(t1,t2);}
+	|
 	< IF > t=Root() < THEN > t1=Root() < ELSE > t2=Root() < END >
 		{return new ASTIf(t,t1,t2);} 
 }

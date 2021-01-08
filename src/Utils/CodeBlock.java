@@ -149,7 +149,25 @@ public class CodeBlock {
          code.add(label+":");
          return n_label;
      }
-
+     
+     public String emit_label(){
+         String label = this.createLabel();
+         code.add(label+":");
+         return label;
+     }
+     
+     public String emit_while_condition(){
+         emit("sipush "+1);
+         String end = createLabel();
+         code.add("if_icmpne "+end);
+         return end;
+     }
+     
+     public void emit_end_while(String start, String end){
+         code.add("goto "+start);
+         code.add(end+":");
+         emit("sipush "+0);
+     }
      
      public void emit_and(){
          code.add("iand");
