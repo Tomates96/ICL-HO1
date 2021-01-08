@@ -3,7 +3,7 @@ options {
 }
 PARSER_BEGIN(Parser)
 
-
+package parser;
 import environment.*;
 import ast.*;
 import values.*;
