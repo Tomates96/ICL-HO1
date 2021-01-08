@@ -224,8 +224,8 @@ ASTNode Fact() :
     n = <Num>
    { return new ASTNum(Integer.parseInt(n.image)); }
    |
-   <LPAR> t=Exp() <RPAR>
-	{ return t; }
+   < LPAR > t=Disj() < RPAR > 
+		{return t;}
    |
    < DEF > bindings = Bindings() <IN>  body = Root() <END>
    {return new ASTDef(bindings,body);}
