@@ -3,45 +3,51 @@ import java.util.*;
 
 
 /*Interpreter class*/
-public class Environment implements EnvironmentInterface{
+public class Environment<X> {
 
-	private Stack<Map<String, Integer>> e;
+	private Stack<Map<String, X>> e;
+	
 	
 	public Environment (){
-		e = new Stack<Map<String, Integer>>();
+		e = new Stack<Map<String, X>>();
 	}
 	
-	@Override
-	public Environment beginScope() {
-		Map<String, Integer> assocs = new HashMap<String, Integer>();
+	public Environment<X> beginScope() {
+		Map<String, X> assocs = new HashMap<String, X>();
 		e.add(assocs);
 		return this;
 	}
 
-	@Override
-	public Environment endScope() {
+	public Environment<X> endScope() {
 		e.pop();
-		return this;
+		return null;
 	}
 
-	@Override
-	public void assoc(String id, int val) throws IdentifierDeclaredTwice {
-		if(e.get(0).containsKey(id))
-			throw new IdentifierDeclaredTwice();
-		e.get(0).put(id, val);
-	}
-
-	@Override
-	public int find(String id) throws UndeclaredIdentifier {
-		
-		for(Map<String, Integer> m : e) {
+	public void assoc(String id, X val) throws IdentifierDeclaredTwice {
+		for(Map<String, X> m : e) {
 			if(m.containsKey(id)) {
-				return m.get(id);
+				throw new IdentifierDeclaredTwice();
+			}
+		}
+		Map<String, X> assocs = new HashMap<String, X>();
+		assocs.put(id, val);
+		e.add(assocs);
+	}
+
+	public X find(String id) throws UndeclaredIdentifier {
+		Environment<X> current = this;
+		while(current != null) {
+			for(Map<String, X> m : current.e) {
+				if(m.containsKey(id)) {
+					return m.get(id);
+				}
 			}
 		}
 		throw new UndeclaredIdentifier();
 	}
  
-
+	public int depth() {
+		return e.size();
+	}
 	
 }

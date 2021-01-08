@@ -6,6 +6,7 @@ PARSER_BEGIN(Parser)
 
 import ast.*;
 import environment.*;
+import java.util.*;
 /** ID lister. */
 public class Parser {
 
@@ -101,16 +102,26 @@ ASTNode Term() :
 
 ASTNode Fact() :
 { Token n; 
-  ASTNode t, body;}
+  ASTNode t, body;
+  List<Binder> bindings = new LinkedList<Binder>();}
 {
-    n=<Num>
+    n = <Num>
    { return new ASTNum(Integer.parseInt(n.image)); }
    |
    <LPAR> t=Exp() <RPAR>
 	{ return t; }
    |
-   < DEF > n = <Id> <EQ> t = Exp() <IN>  body = Exp() <END>
-   {return new ASTDef(n.image,t,body);}
+   < DEF > bindings = Bindings() <IN>  body = Exp() <END>
+   {return new ASTDef(bindings,body);}
+}
+
+List<Binder> Bindings():
+{ Token x;
+  ASTNode t1;
+  List<Binder> bindings = new LinkedList <Binder>(); }
+{
+  (( x = <Id> <EQ> t1 = Exp() )
+   {bindings.add(new Binder(x.image,t1));}) + {return bindings;}
 }
 
 

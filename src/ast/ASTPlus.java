@@ -1,7 +1,7 @@
 package ast;
 import Utils.CodeBlock;
 import environment.*;
-
+import values.*;
 public class ASTPlus implements ASTNode {
 
 ASTNode lhs, rhs;
@@ -10,20 +10,33 @@ ASTNode lhs, rhs;
 	{
 		lhs = l; rhs = r;
 	}
-	public int eval(Environment e) throws UndeclaredIdentifier, IdentifierDeclaredTwice
-    { 
 		
-		int v1 = lhs.eval(e);
-		int v2 = rhs.eval(e);
-        return v1+v2; 
+	public IValue eval(Environment<IValue> env) throws UndeclaredIdentifier, IdentifierDeclaredTwice,  BadTypeException{
+		IValue l=lhs.eval(env);
+		IValue r=rhs.eval(env);
+		if(l instanceof intValues && r instanceof intValues)
+			return new intValues(((intValues)l).getValue() + ((intValues)r).getValue());
+		
+		else if(l instanceof memCellValues && r instanceof intValues){
+			IValue int_l = ((memCellValues)l).get();
+				if( int_l instanceof  intValues)
+					return new intValues(((intValues)int_l).getValue() + ((intValues)r).getValue());
+		}
+		else if(l instanceof intValues && r instanceof memCellValues) {
+			IValue int_r = ((memCellValues) r).get();
+			if (int_r instanceof intValues)
+				return new intValues(((intValues) l).getValue() + ((intValues) int_r).getValue());
+
+		}
+		throw new BadTypeException();
 	}
+	
 	@Override
-	public void compile(CodeBlock c, CompileEnvironment env) {
+	public void compile(CodeBlock c, CompileEnvironment<IValue> env)  throws UndeclaredIdentifier, IdentifierDeclaredTwice,  BadTypeException{
 		lhs.compile(c, env);
 		rhs.compile(c, env);
 		c.emit("iadd");
 	}
-	
     
 }
 

@@ -1,9 +1,10 @@
 package ast;
 import Utils.*;
 import environment.*;
+import values.*;
 
 public interface ASTNode {
 
-	int eval(Environment e) throws UndeclaredIdentifier, IdentifierDeclaredTwice;
-	void compile (CodeBlock c, CompileEnvironment env);
+	IValue eval(Environment<IValue>  e) throws UndeclaredIdentifier, IdentifierDeclaredTwice, BadTypeException;
+	void compile (CodeBlock c, CompileEnvironment<IValue> env) throws UndeclaredIdentifier, IdentifierDeclaredTwice,  BadTypeException;
 }
